@@ -1,0 +1,10 @@
+E:\Dokumente\Projects\C#\dead cells v1.0 trainer +10\dead cells v1.0 trainer +10\bin\Debug\dead cells v1.0 trainer +10.exe.config
+E:\Dokumente\Projects\C#\dead cells v1.0 trainer +10\dead cells v1.0 trainer +10\bin\Debug\dead cells v1.0 trainer +10.exe
+E:\Dokumente\Projects\C#\dead cells v1.0 trainer +10\dead cells v1.0 trainer +10\bin\Debug\dead cells v1.0 trainer +10.pdb
+E:\Dokumente\Projects\C#\dead cells v1.0 trainer +10\dead cells v1.0 trainer +10\obj\Debug\dead cells v1.0 trainer +10.csprojAssemblyReference.cache
+E:\Dokumente\Projects\C#\dead cells v1.0 trainer +10\dead cells v1.0 trainer +10\obj\Debug\dead_cells_v1._0_trainer__10.TrainerUI.resources
+E:\Dokumente\Projects\C#\dead cells v1.0 trainer +10\dead cells v1.0 trainer +10\obj\Debug\dead_cells_v1._0_trainer__10.Properties.Resources.resources
+E:\Dokumente\Projects\C#\dead cells v1.0 trainer +10\dead cells v1.0 trainer +10\obj\Debug\dead cells v1.0 trainer +10.csproj.GenerateResource.cache
+E:\Dokumente\Projects\C#\dead cells v1.0 trainer +10\dead cells v1.0 trainer +10\obj\Debug\dead cells v1.0 trainer +10.csproj.CoreCompileInputs.cache
+E:\Dokumente\Projects\C#\dead cells v1.0 trainer +10\dead cells v1.0 trainer +10\obj\Debug\dead cells v1.0 trainer +10.exe
+E:\Dokumente\Projects\C#\dead cells v1.0 trainer +10\dead cells v1.0 trainer +10\obj\Debug\dead cells v1.0 trainer +10.pdb
