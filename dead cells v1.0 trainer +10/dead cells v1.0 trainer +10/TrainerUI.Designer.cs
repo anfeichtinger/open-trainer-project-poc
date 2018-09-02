@@ -59,6 +59,7 @@
             this.function8 = new System.Windows.Forms.Label();
             this.function9 = new System.Windows.Forms.Label();
             this.function10 = new System.Windows.Forms.Label();
+            this.otpLink = new System.Windows.Forms.LinkLabel();
             ((System.ComponentModel.ISupportInitialize)(this.upperDiv)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lowerDiv)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.midDiv)).BeginInit();
@@ -113,7 +114,7 @@
             // copyright
             // 
             this.copyright.ForeColor = System.Drawing.SystemColors.Control;
-            this.copyright.Location = new System.Drawing.Point(0, 505);
+            this.copyright.Location = new System.Drawing.Point(0, 525);
             this.copyright.Name = "copyright";
             this.copyright.Size = new System.Drawing.Size(400, 30);
             this.copyright.TabIndex = 5;
@@ -381,12 +382,25 @@
             this.function10.Text = "no cooldown";
             this.function10.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // otpLink
+            // 
+            this.otpLink.LinkColor = System.Drawing.Color.White;
+            this.otpLink.Location = new System.Drawing.Point(0, 509);
+            this.otpLink.Name = "otpLink";
+            this.otpLink.Size = new System.Drawing.Size(400, 13);
+            this.otpLink.TabIndex = 31;
+            this.otpLink.TabStop = true;
+            this.otpLink.Text = "OpenTrainerProject";
+            this.otpLink.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.otpLink.Click += new System.EventHandler(this.otpLink_Click);
+            // 
             // TrainerUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(36)))), ((int)(((byte)(36)))));
-            this.ClientSize = new System.Drawing.Size(400, 540);
+            this.ClientSize = new System.Drawing.Size(400, 560);
+            this.Controls.Add(this.otpLink);
             this.Controls.Add(this.function10);
             this.Controls.Add(this.function9);
             this.Controls.Add(this.function8);
@@ -461,6 +475,7 @@
         private System.Windows.Forms.Label function8;
         private System.Windows.Forms.Label function9;
         private System.Windows.Forms.Label function10;
+        private System.Windows.Forms.LinkLabel otpLink;
     }
 }
 

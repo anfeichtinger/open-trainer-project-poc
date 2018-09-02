@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -104,8 +101,8 @@ namespace dead_cells_v1._0_trainer__10
                 SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
             }
         }
-        //Drag Form close
-        // Exit Btn open
+        //Allow Form to be dragged - close
+        // ExitBtn - open
         private void exitBtn_Click(object sender, EventArgs e)
         {
             ResetVars();
@@ -120,7 +117,12 @@ namespace dead_cells_v1._0_trainer__10
         {
             exitBtn.BackColor = Color.Red;
         }
-        //Allow Form to be dragged - close
+        // ExitBtn - close
+        //Link to OpenTrainerProject on GitHub
+        private void otpLink_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://github.com/Pharrax/OpenTrainerProject");
+        }
 
         public Mem mem = new Mem(); //For Reading and Writing Memory
         bool gameOpen = false; // Is game open?
@@ -128,7 +130,7 @@ namespace dead_cells_v1._0_trainer__10
         private SoundPlayer notActive = new SoundPlayer(dead_cells_v1._0_trainer__10.Properties.Resources.notactive);
         private SoundPlayer active = new SoundPlayer(dead_cells_v1._0_trainer__10.Properties.Resources.active);
 
-        //Store what is active f1 - f3 not needed
+        //Store what is active f1 - f3 not needed here
         bool fn4 = false;
         bool fn5 = false;
         bool fn6 = false;
@@ -497,6 +499,5 @@ namespace dead_cells_v1._0_trainer__10
             }
             base.WndProc(ref m);
         }
-
     }
 }
