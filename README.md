@@ -1,8 +1,9 @@
 # Open Trainer Project
 ### Free and open source game trainers by pharrax
+Trainers are written in C# with help of open source library memory.dll (https://github.com/erfg12/memory.dll/wiki)
 
 ## Who are you?
-I'm pharrax just a IT-student trying to learn. 
+I'm pharrax just a IT-student trying to learn. You can write me per mail for questions: pharrax.xda@gmail.com
 
 ## Why do this?
 I wanted to give something to the community.
