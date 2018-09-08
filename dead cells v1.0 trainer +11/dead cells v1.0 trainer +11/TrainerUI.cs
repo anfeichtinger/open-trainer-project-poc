@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 using Memory;
 using System.Media;
 
-namespace dead_cells_v1._0_trainer__11
+namespace dead_cells_v1._0_trainer__11_otp
 {
     public partial class TrainerUI : Form
     {
@@ -109,23 +109,23 @@ namespace dead_cells_v1._0_trainer__11
         }
         //Allow Form to be dragged - close
         // ExitBtn - open
-        private void exitBtn_Click(object sender, EventArgs e)
+        private void ExitBtn_Click(object sender, EventArgs e)
         {
             ResetVars(true);
             procCheckerAsync.CancelAsync();
             this.Close();
         }
-        private void exitBtn_MouseHover(object sender, EventArgs e)
+        private void ExitBtn_MouseHover(object sender, EventArgs e)
         {
             exitBtn.BackColor = Color.IndianRed;
         }
-        private void exitBtn_MouseLeave(object sender, EventArgs e)
+        private void ExitBtn_MouseLeave(object sender, EventArgs e)
         {
             exitBtn.BackColor = Color.Red;
         }
         // ExitBtn - close
         //Link to OpenTrainerProject on GitHub
-        private void otpLink_Click(object sender, EventArgs e)
+        private void OtpLink_Click(object sender, EventArgs e)
         {
             System.Diagnostics.Process.Start("https://github.com/Pharrax/OpenTrainerProject");
         }
@@ -133,8 +133,8 @@ namespace dead_cells_v1._0_trainer__11
         public Mem mem = new Mem(); //For Reading and Writing Memory
         bool gameOpen = false; // Is game open?
         private int pID = 0; //Whats the ID of the process? 0 if none
-        private SoundPlayer notActive = new SoundPlayer(dead_cells_v1._0_trainer__11.Properties.Resources.notactive);
-        private SoundPlayer active = new SoundPlayer(dead_cells_v1._0_trainer__11.Properties.Resources.active);
+        private SoundPlayer notActive = new SoundPlayer(dead_cells_v1._0_trainer__11_otp.Properties.Resources.notactive);
+        private SoundPlayer active = new SoundPlayer(dead_cells_v1._0_trainer__11_otp.Properties.Resources.active);
         //For Timer
         private System.Timers.Timer hotkeyTimer;
         private int elapsedTime = 0;
@@ -178,61 +178,50 @@ namespace dead_cells_v1._0_trainer__11
                     hotkeyTimer.Start();
                 }
             }
-            loadTooltips();
+            LoadTooltips();
         }
         //Init Tooltips on function hover
-        private void loadTooltips()
+        private void LoadTooltips()
         {
             //Function1
-            ToolTip toolTip1 = new ToolTip();
-            toolTip1.ShowAlways = true;
+            ToolTip toolTip1 = new ToolTip { ShowAlways = true };
             toolTip1.SetToolTip(function1, "sets your current money to the value you choose on the left.\nwill be shown once you collect or spend money\nplease confirm with enter");
             //Function2
-            ToolTip toolTip2 = new ToolTip();
-            toolTip2.ShowAlways = true;
+            ToolTip toolTip2 = new ToolTip { ShowAlways = true };
             toolTip2.SetToolTip(function2, "sets your current cells to the value you choose on the left.\nwill be shown once you collect or spend money\nplease confirm with enter");
             //Function3
-            ToolTip toolTip3 = new ToolTip();
-            toolTip3.ShowAlways = true;
+            ToolTip toolTip3 = new ToolTip { ShowAlways = true };
             toolTip3.SetToolTip(function3, "sets current and max health to 999999.\nshould be pretty stable but you will still die from curses");
             //Function4
-            ToolTip toolTip4 = new ToolTip();
-            toolTip4.ShowAlways = true;
+            ToolTip toolTip4 = new ToolTip { ShowAlways = true };
             toolTip4.SetToolTip(function4, "freezes your current money value");
             //Function5
-            ToolTip toolTip5 = new ToolTip();
-            toolTip5.ShowAlways = true;
+            ToolTip toolTip5 = new ToolTip { ShowAlways = true };
             toolTip5.SetToolTip(function5, "freezes your current cells value");
             //Function6
-            ToolTip toolTip6 = new ToolTip();
-            toolTip6.ShowAlways = true;
+            ToolTip toolTip6 = new ToolTip { ShowAlways = true };
             toolTip6.SetToolTip(function6, "freezes the timer on the left side.\nsometimes doesn't work, restart game and trainer if that happens");
             //Function7
-            ToolTip toolTip7 = new ToolTip();
-            toolTip7.ShowAlways = true;
+            ToolTip toolTip7 = new ToolTip { ShowAlways = true };
             toolTip7.SetToolTip(function7, "makes you invisible to most enemys, bosses will still see you\nthe game will crash if you finish or restart with this enabled!");
             //Function8
-            ToolTip toolTip8 = new ToolTip();
-            toolTip8.ShowAlways = true;
+            ToolTip toolTip8 = new ToolTip { ShowAlways = true };
             toolTip8.SetToolTip(function8, "grants infinite jumps mid-air");
             //Function9
-            ToolTip toolTip9 = new ToolTip();
-            toolTip9.ShowAlways = true;
+            ToolTip toolTip9 = new ToolTip { ShowAlways = true };
             toolTip9.SetToolTip(function9, "ammo for bows and such will not decrease");
             //Function10
-            ToolTip toolTip10 = new ToolTip();
-            toolTip10.ShowAlways = true;
+            ToolTip toolTip10 = new ToolTip { ShowAlways = true };
             toolTip10.SetToolTip(function10, "no cooldown when using utilities or granades");
             //Function11
-            ToolTip toolTip11 = new ToolTip();
-            toolTip11.ShowAlways = true;
+            ToolTip toolTip11 = new ToolTip{ ShowAlways = true };
             toolTip11.SetToolTip(function11, "increases your running speed");
         }
         //Count time
         private void TimerTick(object sender, EventArgs e)
         {
             if (elapsedTime < 70)
-            elapsedTime += 1;
+                elapsedTime += 1;
         }
         //Continously check if the game is running
         private void CheckForProc(object sender, DoWorkEventArgs e)
@@ -335,14 +324,14 @@ namespace dead_cells_v1._0_trainer__11
                             case 1:
                                 elapsedTime = 0;
                                 mem.writeMemory("libhl.dll+0x0002D1A8,0x580,0x0,0x18,0x5C,0x34", "int", fn1Value.Text);
-                                SoundPlayer money = new SoundPlayer(dead_cells_v1._0_trainer__11.Properties.Resources.money);
+                                SoundPlayer money = new SoundPlayer(dead_cells_v1._0_trainer__11_otp.Properties.Resources.money);
                                 money.Play();
                                 money.Dispose();
                                 break;
                             case 2:
                                 elapsedTime = 0;
                                 mem.writeMemory("libhl.dll+0x0002D1A8,0x580,0x0,0x18,0x64,0x31C", "int", fn2Value.Text);
-                                SoundPlayer cells = new SoundPlayer(dead_cells_v1._0_trainer__11.Properties.Resources.cells);
+                                SoundPlayer cells = new SoundPlayer(dead_cells_v1._0_trainer__11_otp.Properties.Resources.cells);
                                 cells.Play();
                                 cells.Dispose();
                                 break;
@@ -706,7 +695,7 @@ namespace dead_cells_v1._0_trainer__11
                     else
                     {
                         elapsedTime = 0;
-                        SoundPlayer notfound = new SoundPlayer(dead_cells_v1._0_trainer__11.Properties.Resources.notfound);
+                        SoundPlayer notfound = new SoundPlayer(dead_cells_v1._0_trainer__11_otp.Properties.Resources.notfound);
                         notfound.Play();
                     }
                 }

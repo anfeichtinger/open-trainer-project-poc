@@ -1,4 +1,4 @@
-﻿namespace dead_cells_v1._0_trainer__11
+﻿namespace dead_cells_v1._0_trainer__11_otp
 {
     partial class TrainerUI
     {
@@ -85,9 +85,9 @@
             this.exitBtn.TabIndex = 1;
             this.exitBtn.Text = "X";
             this.exitBtn.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.exitBtn.Click += new System.EventHandler(this.exitBtn_Click);
-            this.exitBtn.MouseLeave += new System.EventHandler(this.exitBtn_MouseLeave);
-            this.exitBtn.MouseHover += new System.EventHandler(this.exitBtn_MouseHover);
+            this.exitBtn.Click += new System.EventHandler(this.ExitBtn_Click);
+            this.exitBtn.MouseLeave += new System.EventHandler(this.ExitBtn_MouseLeave);
+            this.exitBtn.MouseHover += new System.EventHandler(this.ExitBtn_MouseHover);
             // 
             // title
             // 
@@ -95,9 +95,9 @@
             this.title.ForeColor = System.Drawing.SystemColors.Control;
             this.title.Location = new System.Drawing.Point(13, 6);
             this.title.Name = "title";
-            this.title.Size = new System.Drawing.Size(132, 13);
+            this.title.Size = new System.Drawing.Size(156, 13);
             this.title.TabIndex = 2;
-            this.title.Text = "dead cells v1.0 trainer +11";
+            this.title.Text = "dead cells v1.0 trainer +11 [otp]";
             // 
             // upperDiv
             // 
@@ -376,7 +376,7 @@
             this.otpLink.TabStop = true;
             this.otpLink.Text = "OpenTrainerProject";
             this.otpLink.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.otpLink.Click += new System.EventHandler(this.otpLink_Click);
+            this.otpLink.Click += new System.EventHandler(this.OtpLink_Click);
             // 
             // hotkey11
             // 
@@ -505,7 +505,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "TrainerUI";
-            this.Text = "dead cells v1.0 trainer +11";
+            this.Text = "dead cells v1.0 trainer +11 [otp]";
             this.Load += new System.EventHandler(this.TrainerUI_Load);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.TrainerUI_MouseDown);
             ((System.ComponentModel.ISupportInitialize)(this.upperDiv)).EndInit();

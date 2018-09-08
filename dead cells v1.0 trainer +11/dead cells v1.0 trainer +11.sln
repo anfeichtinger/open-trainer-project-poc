@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28010.2016
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dead cells v1.0 trainer +11", "dead cells v1.0 trainer +11\dead cells v1.0 trainer +11.csproj", "{C6D379C9-C8D4-40F2-9BF2-C9981545DCB2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dead cells v1.0 trainer +11 [otp]", "dead cells v1.0 trainer +11\dead cells v1.0 trainer +11 [otp].csproj", "{C6D379C9-C8D4-40F2-9BF2-C9981545DCB2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

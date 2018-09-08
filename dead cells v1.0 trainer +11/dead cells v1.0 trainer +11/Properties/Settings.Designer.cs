@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace dead_cells_v1._0_trainer__11.Properties {
+namespace dead_cells_v1._0_trainer__11_otp.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]

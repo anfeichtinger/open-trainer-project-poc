@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("dead cells v1.0 trainer +11")]
+[assembly: AssemblyTitle("dead cells v1.0 trainer +11 [otp]")]
 [assembly: AssemblyDescription("made by pharrax")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("pharrax")]
-[assembly: AssemblyProduct("dead cells v1.0 trainer +11")]
+[assembly: AssemblyProduct("dead cells v1.0 trainer +11 [otp]")]
 [assembly: AssemblyCopyright("Copyright pharrax ©  2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace dead_cells_v1._0_trainer__11
+namespace dead_cells_v1._0_trainer__11_otp
 {
     static class Program
     {

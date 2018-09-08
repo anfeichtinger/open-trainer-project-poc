@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace dead_cells_v1._0_trainer__11.Properties {
+namespace dead_cells_v1._0_trainer__11_otp.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace dead_cells_v1._0_trainer__11.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("dead_cells_v1._0_trainer__11.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("dead_cells_v1._0_trainer__11_otp.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
