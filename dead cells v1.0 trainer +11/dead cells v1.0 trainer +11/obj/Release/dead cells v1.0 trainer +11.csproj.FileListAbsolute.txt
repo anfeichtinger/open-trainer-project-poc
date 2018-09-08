@@ -7,4 +7,3 @@ E:\Dokumente\Projects\C#\OpenTrainerProject\dead cells v1.0 trainer +11\dead cel
 E:\Dokumente\Projects\C#\OpenTrainerProject\dead cells v1.0 trainer +11\dead cells v1.0 trainer +11\obj\Release\dead cells v1.0 trainer +11.csproj.CoreCompileInputs.cache
 E:\Dokumente\Projects\C#\OpenTrainerProject\dead cells v1.0 trainer +11\dead cells v1.0 trainer +11\obj\Release\dead cells v1.0 trainer +11.exe
 E:\Dokumente\Projects\C#\OpenTrainerProject\dead cells v1.0 trainer +11\dead cells v1.0 trainer +11\obj\Release\dead cells v1.0 trainer +11.pdb
-E:\Dokumente\Projects\C#\OpenTrainerProject\dead cells v1.0 trainer +11\dead cells v1.0 trainer +11\obj\Release\dead cells v1.0 trainer +11.csprojAssemblyReference.cache

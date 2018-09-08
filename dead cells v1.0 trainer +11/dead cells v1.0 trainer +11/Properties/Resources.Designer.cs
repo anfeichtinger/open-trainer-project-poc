@@ -81,15 +81,6 @@ namespace dead_cells_v1._0_trainer__11.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
         /// </summary>
-        internal static System.IO.UnmanagedMemoryStream health {
-            get {
-                return ResourceManager.GetStream("health", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
-        /// </summary>
         internal static System.IO.UnmanagedMemoryStream money {
             get {
                 return ResourceManager.GetStream("money", resourceCulture);

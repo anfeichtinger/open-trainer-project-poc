@@ -139,7 +139,8 @@ namespace dead_cells_v1._0_trainer__11
         private System.Timers.Timer hotkeyTimer;
         private int elapsedTime = 0;
 
-        //Store what is active f1 - f3 not needed here
+        //Store what is active f1 + f2 not needed here
+        bool fn3 = false;
         bool fn4 = false;
         bool fn5 = false;
         bool fn6 = false;
@@ -149,13 +150,15 @@ namespace dead_cells_v1._0_trainer__11
         bool fn10 = false;
         bool fn11 = false;
         long timeScan = 0;
+        long maxHealthScan = 0;
         long coolScan = 0;
         long ammoScan = 0;
-        Thread threadFreezeHealth;
+        Thread threadUnlimitedHealth;
         Thread threadFreezeMoney;
         Thread threadFreezeCells;
         Thread threadInfJumps;
         Thread threadRunFaster;
+        Thread threadInvisible;
 
         //What to do before UI loads
         private void TrainerUI_Load(object sender, EventArgs e)
@@ -165,7 +168,7 @@ namespace dead_cells_v1._0_trainer__11
             {
                 procCheckerAsync.RunWorkerAsync();
                 procCheckerAsync.WorkerSupportsCancellation = true;
-                //Timer so you cant activate functions while others are busy to avoid crashes
+                //Timer so you can't activate functions while others are busy to avoid crashes
                 if (hotkeyTimer == null)
                 {
                     hotkeyTimer = new System.Timers.Timer();
@@ -175,6 +178,55 @@ namespace dead_cells_v1._0_trainer__11
                     hotkeyTimer.Start();
                 }
             }
+            loadTooltips();
+        }
+        //Init Tooltips on function hover
+        private void loadTooltips()
+        {
+            //Function1
+            ToolTip toolTip1 = new ToolTip();
+            toolTip1.ShowAlways = true;
+            toolTip1.SetToolTip(function1, "sets your current money to the value you choose on the left.\nwill be shown once you collect or spend money\nplease confirm with enter");
+            //Function2
+            ToolTip toolTip2 = new ToolTip();
+            toolTip2.ShowAlways = true;
+            toolTip2.SetToolTip(function2, "sets your current cells to the value you choose on the left.\nwill be shown once you collect or spend money\nplease confirm with enter");
+            //Function3
+            ToolTip toolTip3 = new ToolTip();
+            toolTip3.ShowAlways = true;
+            toolTip3.SetToolTip(function3, "sets current and max health to 999999.\nshould be pretty stable but you will still die from curses");
+            //Function4
+            ToolTip toolTip4 = new ToolTip();
+            toolTip4.ShowAlways = true;
+            toolTip4.SetToolTip(function4, "freezes your current money value");
+            //Function5
+            ToolTip toolTip5 = new ToolTip();
+            toolTip5.ShowAlways = true;
+            toolTip5.SetToolTip(function5, "freezes your current cells value");
+            //Function6
+            ToolTip toolTip6 = new ToolTip();
+            toolTip6.ShowAlways = true;
+            toolTip6.SetToolTip(function6, "freezes the timer on the left side.\nsometimes doesn't work, restart game and trainer if that happens");
+            //Function7
+            ToolTip toolTip7 = new ToolTip();
+            toolTip7.ShowAlways = true;
+            toolTip7.SetToolTip(function7, "makes you invisible to most enemys, bosses will still see you\nthe game will crash if you finish or restart with this enabled!");
+            //Function8
+            ToolTip toolTip8 = new ToolTip();
+            toolTip8.ShowAlways = true;
+            toolTip8.SetToolTip(function8, "grants infinite jumps mid-air");
+            //Function9
+            ToolTip toolTip9 = new ToolTip();
+            toolTip9.ShowAlways = true;
+            toolTip9.SetToolTip(function9, "ammo for bows and such will not decrease");
+            //Function10
+            ToolTip toolTip10 = new ToolTip();
+            toolTip10.ShowAlways = true;
+            toolTip10.SetToolTip(function10, "no cooldown when using utilities or granades");
+            //Function11
+            ToolTip toolTip11 = new ToolTip();
+            toolTip11.ShowAlways = true;
+            toolTip11.SetToolTip(function11, "increases your running speed");
         }
         //Count time
         private void TimerTick(object sender, EventArgs e)
@@ -227,6 +279,7 @@ namespace dead_cells_v1._0_trainer__11
         {
             gameOpen = false;
             pID = 0;
+            fn3 = false;
             fn4 = false;
             fn5 = false;
             fn6 = false;
@@ -239,6 +292,10 @@ namespace dead_cells_v1._0_trainer__11
             ammoScan = 0;
             coolScan = 0;
 
+            function2.ForeColor = Color.White;
+            hotkey2.ForeColor = Color.White;
+            function3.ForeColor = Color.White;
+            hotkey3.ForeColor = Color.White;
             function4.ForeColor = Color.White;
             hotkey4.ForeColor = Color.White;
             function5.ForeColor = Color.White;
@@ -262,7 +319,6 @@ namespace dead_cells_v1._0_trainer__11
                 mem.writeMemory(ammoScan.ToString("x8").ToUpper(), "bytes", "0x89 0x42 0x18");
                 mem.writeMemory(coolScan.ToString("x8").ToUpper(), "bytes", "0xF2 0x0F 0x11 0x59 0x78");
             }
-
         }
         //React on hotkeys here!!
         protected override void WndProc(ref Message m)
@@ -270,58 +326,103 @@ namespace dead_cells_v1._0_trainer__11
             if (m.Msg == 0x0312)
             {
                 int id = m.WParam.ToInt32();
-
                 if (elapsedTime >= 70)
                 {
-
-
                     if (gameOpen)
                     {
                         switch (id)
                         {
                             case 1:
                                 elapsedTime = 0;
-                                mem.writeMemory("libhl.dll+0x0002D1A8,0x448,0x8,0x58,0x64,0xD8", "int", "999999");
-                                SoundPlayer health = new SoundPlayer(dead_cells_v1._0_trainer__11.Properties.Resources.health);
-                                health.Play();
-                                health.Dispose();
-                                break;
-                            case 2:
-                                elapsedTime = 0;
-                                mem.writeMemory("libhl.dll+0x0002D1A8,0x580,0x0,0x18,0x5C,0x34", "int", "999999");
+                                mem.writeMemory("libhl.dll+0x0002D1A8,0x580,0x0,0x18,0x5C,0x34", "int", fn1Value.Text);
                                 SoundPlayer money = new SoundPlayer(dead_cells_v1._0_trainer__11.Properties.Resources.money);
                                 money.Play();
                                 money.Dispose();
                                 break;
-                            case 3:
+                            case 2:
                                 elapsedTime = 0;
-                                mem.writeMemory("libhl.dll+0x0002D1A8,0x580,0x0,0x18,0x64,0x31C", "int", "999");
+                                mem.writeMemory("libhl.dll+0x0002D1A8,0x580,0x0,0x18,0x64,0x31C", "int", fn2Value.Text);
                                 SoundPlayer cells = new SoundPlayer(dead_cells_v1._0_trainer__11.Properties.Resources.cells);
                                 cells.Play();
                                 cells.Dispose();
                                 break;
+                            case 3:
+                                elapsedTime = 0;
+                                //Init Thread for freezing if it doesn't exist yet
+                                if (threadUnlimitedHealth == null)
+                                {
+                                    threadUnlimitedHealth = new Thread(() =>
+                                    {
+                                        Thread.CurrentThread.IsBackground = true;
+                                        Thread.CurrentThread.Name = "threadUnlimitedHealth";
+                                        while (true)
+                                        {
+                                            if (fn3)
+                                            {
+                                                //Current Health
+                                                mem.writeMemory("libhl.dll+0x0002D1A8,0x448,0x8,0x58,0x64,0xD8", "int", "999999");
+                                                //Max Health
+                                                mem.writeMemory("libhl.dll+0x0002D1A8,0x580,0x0,0x18,0x64,0xDC", "int", "999999");
+                                                Thread.Sleep(200);
+                                            }
+                                            else
+                                            {
+                                                Thread.Sleep(200);
+                                                continue;
+                                            }
+                                        }
+                                    });
+                                }
+                                if (fn3)
+                                {
+                                    function3.ForeColor = Color.White;
+                                    hotkey3.ForeColor = Color.White;
+                                    if (maxHealthScan == 0)
+                                    {
+                                        maxHealthScan = ScanAOB(0x09000000, 0x0A000000, "89 88 DC 00 00 00 8B 88", true, true).Result;
+                                    }
+                                    mem.writeMemory(maxHealthScan.ToString("x8").ToUpper(),
+                                        "bytes", "0x89 0x88 0xDC 0x00 0x00 0x00");
+                                    fn3 = !fn3;
+                                    notActive.Play();
+                                }
+                                else
+                                {
+                                    function3.ForeColor = Color.Red;
+                                    hotkey3.ForeColor = Color.Red;
+                                    fn3 = !fn3;
+                                    if (!threadUnlimitedHealth.IsAlive) threadUnlimitedHealth.Start();
+                                    if (maxHealthScan == 0)
+                                    {
+                                        maxHealthScan = ScanAOB(0x09000000, 0x0A000000, "89 88 DC 00 00 00 8B 88", true, true).Result;
+                                    }
+                                    mem.writeMemory(maxHealthScan.ToString("x8").ToUpper(), "bytes", "0x90 0x90 0x90 0x90 0x90 0x90");
+                                    active.Play();
+                                }
+                                break;
                             case 4:
                                 elapsedTime = 0;
                                 //Init Thread for freezing if it doesn't exist yet
-                                if (threadFreezeHealth == null)
+                                if (threadFreezeMoney == null)
                                 {
-                                    threadFreezeHealth = new Thread(() =>
+                                    threadFreezeMoney = new Thread(() =>
                                     {
                                         Thread.CurrentThread.IsBackground = true;
-                                        Thread.CurrentThread.Name = "threadFreezeHealth";
-                                        string healthVal = "";
+                                        Thread.CurrentThread.Name = "threadFreezeMoney";
+
+                                        string moneyVal = "";
                                         while (true)
                                         {
-                                            if (healthVal.Equals("")) healthVal = mem.readInt("libhl.dll+0x0002D1A8,0x448,0x8,0x58,0x64,0xD8").ToString();
+                                            if (moneyVal.Equals("")) moneyVal = mem.readInt("libhl.dll+0x0002D1A8,0x580,0x0,0x18,0x5C,0x34").ToString();
                                             if (fn4)
                                             {
                                                 //Write value above every 300ms
-                                                mem.writeMemory("libhl.dll+0x0002D1A8,0x448,0x8,0x58,0x64,0xD8", "int", healthVal);
+                                                mem.writeMemory("libhl.dll+0x0002D1A8,0x580,0x0,0x18,0x5C,0x34", "int", moneyVal);
                                                 Thread.Sleep(300);
                                             }
                                             else
                                             {
-                                                healthVal = "";
+                                                moneyVal = "";
                                                 Thread.Sleep(300);
                                                 continue;
                                             }
@@ -340,34 +441,33 @@ namespace dead_cells_v1._0_trainer__11
                                     function4.ForeColor = Color.Red;
                                     hotkey4.ForeColor = Color.Red;
                                     fn4 = !fn4;
-                                    if (!threadFreezeHealth.IsAlive) threadFreezeHealth.Start();
+                                    if (!threadFreezeMoney.IsAlive) threadFreezeMoney.Start();
                                     active.Play();
-                                    break;
                                 }
                                 break;
                             case 5:
                                 elapsedTime = 0;
                                 //Init Thread for freezing if it doesn't exist yet
-                                if (threadFreezeMoney == null)
+                                if (threadFreezeCells == null)
                                 {
-                                    threadFreezeMoney = new Thread(() =>
+                                    threadFreezeCells = new Thread(() =>
                                     {
                                         Thread.CurrentThread.IsBackground = true;
-                                        Thread.CurrentThread.Name = "threadFreezeMoney";
+                                        Thread.CurrentThread.Name = "threadFreezeCells";
 
-                                        string moneyVal = "";
+                                        string cellsVal = "";
                                         while (true)
                                         {
-                                            if (moneyVal.Equals("")) moneyVal = mem.readInt("libhl.dll+0x0002D1A8,0x580,0x0,0x18,0x5C,0x34").ToString();
+                                            if (cellsVal.Equals("")) cellsVal = mem.readInt("libhl.dll+0x0002D1A8,0x580,0x0,0x18,0x64,0x31C").ToString();
                                             if (fn5)
                                             {
                                                 //Write value above every 300ms
-                                                mem.writeMemory("libhl.dll+0x0002D1A8,0x580,0x0,0x18,0x5C,0x34", "int", moneyVal);
+                                                mem.writeMemory("libhl.dll+0x0002D1A8,0x580,0x0,0x18,0x64,0x31C", "int", cellsVal);
                                                 Thread.Sleep(300);
                                             }
                                             else
                                             {
-                                                moneyVal = "";
+                                                cellsVal = "";
                                                 Thread.Sleep(300);
                                                 continue;
                                             }
@@ -386,44 +486,22 @@ namespace dead_cells_v1._0_trainer__11
                                     function5.ForeColor = Color.Red;
                                     hotkey5.ForeColor = Color.Red;
                                     fn5 = !fn5;
-                                    if (!threadFreezeMoney.IsAlive) threadFreezeMoney.Start();
+                                    if (!threadFreezeCells.IsAlive) threadFreezeCells.Start();
                                     active.Play();
-                                    break;
                                 }
                                 break;
                             case 6:
                                 elapsedTime = 0;
-                                //Init Thread for freezing if it doesn't exist yet
-                                if (threadFreezeCells == null)
-                                {
-                                    threadFreezeCells = new Thread(() =>
-                                    {
-                                        Thread.CurrentThread.IsBackground = true;
-                                        Thread.CurrentThread.Name = "threadFreezeCells";
-
-                                        string cellsVal = "";
-                                        while (true)
-                                        {
-                                            if (cellsVal.Equals("")) cellsVal = mem.readInt("libhl.dll+0x0002D1A8,0x580,0x0,0x18,0x64,0x31C").ToString();
-                                            if (fn6)
-                                            {
-                                                //Write value above every 300ms
-                                                mem.writeMemory("libhl.dll+0x0002D1A8,0x580,0x0,0x18,0x64,0x31C", "int", cellsVal);
-                                                Thread.Sleep(300);
-                                            }
-                                            else
-                                            {
-                                                cellsVal = "";
-                                                Thread.Sleep(300);
-                                                continue;
-                                            }
-                                        }
-                                    });
-                                }
                                 if (fn6)
                                 {
                                     function6.ForeColor = Color.White;
                                     hotkey6.ForeColor = Color.White;
+                                    //AoB Scan
+                                    if (timeScan == 0)
+                                    {
+                                        timeScan = ScanAOB(0x09000000, 0x0A000000, "F2 0F 11 70 28 83 EC 0C FF", true, true).Result;
+                                    }
+                                    mem.writeMemory(timeScan.ToString("x8").ToUpper(), "bytes", "0xF2 0x0F 0x11 0x70 0x28 0x83 0xEC 0x0C 0xFF");
                                     fn6 = !fn6;
                                     notActive.Play();
                                 }
@@ -431,31 +509,6 @@ namespace dead_cells_v1._0_trainer__11
                                 {
                                     function6.ForeColor = Color.Red;
                                     hotkey6.ForeColor = Color.Red;
-                                    fn6 = !fn6;
-                                    if (!threadFreezeCells.IsAlive) threadFreezeCells.Start();
-                                    active.Play();
-                                    break;
-                                }
-                                break;
-                            case 7:
-                                elapsedTime = 0;
-                                if (fn7)
-                                {
-                                    function7.ForeColor = Color.White;
-                                    hotkey7.ForeColor = Color.White;
-                                    //AoB Scan
-                                    if (timeScan == 0)
-                                    {
-                                        timeScan = ScanAOB(0x09000000, 0x0A000000, "F2 0F 11 70 28 83 EC 0C FF", true, true).Result;
-                                    }
-                                    mem.writeMemory(timeScan.ToString("x8").ToUpper(), "bytes", "0xF2 0x0F 0x11 0x70 0x28 0x83 0xEC 0x0C 0xFF");
-                                    fn7 = !fn7;
-                                    notActive.Play();
-                                }
-                                else
-                                {
-                                    function7.ForeColor = Color.Red;
-                                    hotkey7.ForeColor = Color.Red;
                                     //AoB Scan
                                     if (timeScan == 0)
                                     {
@@ -463,7 +516,48 @@ namespace dead_cells_v1._0_trainer__11
                                     }
                                     //Replace with code that does nothing
                                     mem.writeMemory(timeScan.ToString("x8").ToUpper(), "bytes", "0x90 0x90 0x90 0x90 0x90");
+                                    fn6 = !fn6;
+                                    active.Play();
+                                }
+                                break;
+                            case 7:
+                                elapsedTime = 0;
+                                //Init Thread if it doesn't exist yet
+                                if (threadInvisible == null)
+                                {
+                                    threadInvisible = new Thread(() =>
+                                    {
+                                        Thread.CurrentThread.IsBackground = true;
+                                        Thread.CurrentThread.Name = "threadInvisible";
+                                        while (true)
+                                        {
+                                            if (fn7)
+                                            {
+                                                mem.writeMemory("libhl.dll+0002D1A8,0x580,0x0,0x18,0x64,0x130,0x8,0x11E", "int", "16470");
+                                                Thread.Sleep(100);
+                                            }
+                                            else
+                                            {
+                                                Thread.Sleep(300);
+                                                continue;
+                                            }
+                                        }
+                                    });
+                                }
+                                if (fn7)
+                                {
+                                    function7.ForeColor = Color.White;
+                                    hotkey7.ForeColor = Color.White;
                                     fn7 = !fn7;
+                                    mem.writeMemory("libhl.dll+0002D1A8,0x580,0x0,0x18,0x64,0x130,0x8,0x11E", "int", "49136");
+                                    notActive.Play();
+                                }
+                                else
+                                {
+                                    function7.ForeColor = Color.Red;
+                                    hotkey7.ForeColor = Color.Red;
+                                    fn7 = !fn7;
+                                    if (!threadInvisible.IsAlive) threadInvisible.Start();
                                     active.Play();
                                 }
                                 break;
@@ -505,7 +599,6 @@ namespace dead_cells_v1._0_trainer__11
                                     fn8 = !fn8;
                                     if (!threadInfJumps.IsAlive) threadInfJumps.Start();
                                     active.Play();
-                                    break;
                                 }
                                 break;
                             case 9:
@@ -606,7 +699,6 @@ namespace dead_cells_v1._0_trainer__11
                                     fn11 = !fn11;
                                     if (!threadRunFaster.IsAlive) threadRunFaster.Start();
                                     active.Play();
-                                    break;
                                 }
                                 break;
                         }
