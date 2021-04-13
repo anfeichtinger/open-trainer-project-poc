@@ -24,10 +24,14 @@
 </template>
 
 <script lang="ts">
+import { ipcRenderer } from "electron";
+
 export default {
   name: "TitleBar",
   methods: {
-    quit: function() {},
+    quit: function() {
+      ipcRenderer.sendSync("close-app");
+    },
   },
 };
 </script>
