@@ -1,6 +1,12 @@
 "use strict";
 
-import { app, protocol, BrowserWindow, ipcMain } from "electron";
+import {
+  app,
+  protocol,
+  BrowserWindow,
+  ipcMain,
+  globalShortcut,
+} from "electron";
 import { createProtocol } from "vue-cli-plugin-electron-builder/lib";
 import installExtension, { VUEJS_DEVTOOLS } from "electron-devtools-installer";
 const isDevelopment = process.env.NODE_ENV !== "production";
@@ -17,7 +23,7 @@ async function createWindow() {
     width: 1000,
     height: 600,
     transparent: true,
-    frame: false,
+    //frame: false,
     hasShadow: true,
     resizable: false,
     webPreferences: {
@@ -92,6 +98,12 @@ if (isDevelopment) {
   }
 }
 
-ipcMain.on("close-app", (_event, _messages) => {
+ipcMain.on("close-app", (/*_event, _args*/) => {
   app.exit(0);
+});
+
+ipcMain.on("register-hotkey", (event, args) => {
+  globalShortcut.register(args, () => {
+    event.reply("F1", args);
+  });
 });
