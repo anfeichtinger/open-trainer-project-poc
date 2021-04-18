@@ -63,7 +63,7 @@
   <ItemGroup>
     <Reference Include="Memory, Version=1.2.21.0, Culture=neutral, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\memory.dll\Memory\obj\x64\Release\netstandard2.0\Memory.dll</HintPath>
+      <HintPath>Dll\Memory.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
