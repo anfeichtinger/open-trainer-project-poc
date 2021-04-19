@@ -43,5 +43,14 @@ namespace OpenTrainerProject
                 TitleBar.TitleText = "Game Not Found";
             }
         }
+
+        private void GithubButton_Click(object sender, RoutedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://github.com/anfeichtinger/open-trainer-project");
+        }
+        private void DonateButton_Click(object sender, RoutedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://www.paypal.com/donate/?hosted_button_id=EE3W7PS6AHEP8");
+        }
     }
 }
