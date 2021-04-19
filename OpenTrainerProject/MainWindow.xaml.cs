@@ -28,18 +28,6 @@ namespace OpenTrainerProject
             InitializeComponent();
         }
 
-        private void TitleBar_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            if (e.LeftButton == MouseButtonState.Pressed) {
-                DragMove();
-            }
-        }
-
-        private void CloseButton_Click(object sender, RoutedEventArgs e)
-        {
-            Close();
-        }
-
         public Mem MemLib = new Mem();
         bool gameProc = false;
         private void ProceedButton_Click(object sender, RoutedEventArgs e)
@@ -47,12 +35,12 @@ namespace OpenTrainerProject
             gameProc = MemLib.OpenProcess("explorer");
             if (gameProc)
             {
-                WindowTitle.Text = "Found Explorer.exe";
+                TitleBar.TitleText = "Found Explorer.exe";
                 MemLib.OpenProcess("explorer");
             }
             else 
             {
-                WindowTitle.Text = "Open Trainer Project";
+                TitleBar.TitleText = "Game Not Found";
             }
         }
     }
