@@ -1,6 +1,9 @@
-﻿using System;
+﻿using OpenTrainerProject.Components;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -12,7 +15,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Memory;
 
 namespace OpenTrainerProject
 {
@@ -21,36 +23,27 @@ namespace OpenTrainerProject
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, INotifyPropertyChanged
     {
+        private UserControl _WindowContent;
+        public event PropertyChangedEventHandler PropertyChanged;
+        public UserControl WindowContent 
+        { 
+            get { return _WindowContent; } 
+            set { 
+                _WindowContent = value; 
+                OnPropertyChanged(); 
+            }
+        }
+        protected void OnPropertyChanged([CallerMemberName] string name = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
         public MainWindow()
         {
             InitializeComponent();
+            WindowContent = new StartView();
         }
 
-        public Mem MemLib = new Mem();
-        bool gameProc = false;
-        private void ProceedButton_Click(object sender, RoutedEventArgs e)
-        {
-            gameProc = MemLib.OpenProcess("explorer");
-            if (gameProc)
-            {
-                TitleBar.TitleText = "Found Explorer.exe";
-                MemLib.OpenProcess("explorer");
-            }
-            else 
-            {
-                TitleBar.TitleText = "Game Not Found";
-            }
-        }
-
-        private void GithubButton_Click(object sender, RoutedEventArgs e)
-        {
-            System.Diagnostics.Process.Start("https://github.com/anfeichtinger/open-trainer-project");
-        }
-        private void DonateButton_Click(object sender, RoutedEventArgs e)
-        {
-            System.Diagnostics.Process.Start("https://www.paypal.com/donate/?hosted_button_id=EE3W7PS6AHEP8");
-        }
     }
 }

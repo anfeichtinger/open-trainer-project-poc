@@ -37,7 +37,7 @@
             Width="36"
             Height="36"
             RenderOptions.BitmapScalingMode="Fant"
-            Source="Images/Logo.png" />
+            Source="../Images/Logo.png" />
 
         <TextBlock
             x:Name="WindowTitle"
