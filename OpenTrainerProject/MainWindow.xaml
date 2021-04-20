@@ -10,6 +10,9 @@
     Background="Transparent"
     ResizeMode="NoResize"
     WindowStyle="None">
+    <Window.Resources>
+        <ResourceDictionary Source="Resources\ComboBoxDictionary.xaml" />
+    </Window.Resources>
     <Border
         Width="980"
         Height="580"
@@ -116,11 +119,11 @@
                         </Button.Template>
                     </Button>
                     <Button
+                        Click="DonateButton_Click"
                         FontSize="16"
                         FontWeight="Medium"
                         Foreground="White"
-                        ToolTip="Donate"
-                        Click="DonateButton_Click">
+                        ToolTip="Donate">
                         <Image Source="Images/HeartIcon.png" />
                         <Button.Style>
                             <Style TargetType="Button">
@@ -176,14 +179,10 @@
                     Foreground="White"
                     Text="Game" />
                 <ComboBox
-                    Width="200"
+                    Width="256"
                     Margin="0,8,0,0"
-                    Padding="8"
-                    HorizontalAlignment="Center"
-                    Background="Transparent"
-                    BorderThickness="0"
-                    Foreground="Black"
-                    IsEditable="True" />
+                    IsEditable="True"
+                    Style="{StaticResource ResourceKey=CleanComboBoxStyle}" />
                 <TextBlock
                     Margin="0,32,0,0"
                     FontFamily="Fonts/#Nunito"
@@ -192,22 +191,18 @@
                     Foreground="White"
                     Text="Version" />
                 <ComboBox
-                    Width="200"
+                    Width="256"
                     Margin="0,8,0,0"
-                    Padding="8"
-                    HorizontalAlignment="Center"
-                    Background="Transparent"
-                    BorderThickness="0"
-                    Foreground="Black"
-                    IsEditable="True" />
+                    IsEditable="True"
+                    Style="{StaticResource ResourceKey=CleanComboBoxStyle}" />
                 <Button
                     Margin="0,24,0,0"
+                    HorizontalAlignment="Left"
                     Click="ProceedButton_Click"
                     Content="Let's go!"
                     FontSize="16"
                     FontWeight="Medium"
                     Foreground="White">
-
                     <Button.Style>
                         <Style TargetType="Button">
                             <Setter Property="TextElement.FontFamily" Value="Fonts/#Nunito" />
