@@ -7,6 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DesignHeight="600"
     d:DesignWidth="1000"
+    DataContext="{Binding RelativeSource={RelativeSource Self}}"
     mc:Ignorable="d">
     <Grid>
         <Grid.RowDefinitions>
@@ -16,18 +17,52 @@
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
-            <ColumnDefinition />
         </Grid.ColumnDefinitions>
 
         <StackPanel
             Grid.Row="1"
             Margin="80"
-            VerticalAlignment="Center" />
-        <StackPanel
-            Grid.Row="1"
-            Grid.Column="2"
-            Margin="80"
-            HorizontalAlignment="Center" />
+            VerticalAlignment="Center">
+            <Button
+                Click="ProceedButton_Click"
+                Content="Fetch"
+                FontSize="16"
+                FontWeight="Medium"
+                Foreground="White">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="TextElement.FontFamily" Value="Fonts/#Nunito" />
+                        <Setter Property="Background" Value="#ed1e79" />
+                        <Setter Property="Cursor" Value="Hand" />
+                        <Setter Property="Button.Effect">
+                            <Setter.Value>
+                                <DropShadowEffect
+                                    BlurRadius="8"
+                                    Opacity="0.5"
+                                    ShadowDepth="3"
+                                    Color="#2f0618" />
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#f14d95" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border
+                            Width="100"
+                            Height="32"
+                            Background="{TemplateBinding Background}"
+                            CornerRadius="16">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+        </StackPanel>
         <local:TitleBar x:Name="TitleBar" Grid.ColumnSpan="2" />
     </Grid>
 </UserControl>

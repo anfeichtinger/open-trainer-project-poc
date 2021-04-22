@@ -7,6 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DesignHeight="600"
     d:DesignWidth="1000"
+    DataContext="{Binding RelativeSource={RelativeSource Self}}"
     mc:Ignorable="d">
     <UserControl.Resources>
         <ResourceDictionary>
@@ -97,8 +98,10 @@
                 Foreground="White"
                 Text="Game" />
             <ComboBox
+                Name="GameComboBox"
                 Width="256"
                 Margin="0,8,0,0"
+                DropDownClosed="GameComboBox_DropDownClosed"
                 IsEditable="True"
                 Style="{StaticResource ResourceKey=CleanComboBoxStyle}" />
             <TextBlock
@@ -109,6 +112,7 @@
                 Foreground="White"
                 Text="Version" />
             <ComboBox
+                Name="VersionComboBox"
                 Width="256"
                 Margin="0,8,0,0"
                 IsEditable="True"
@@ -119,13 +123,14 @@
                 Click="ProceedButton_Click"
                 Content="Let's go!"
                 FontSize="16"
-                FontWeight="Medium"
-                Foreground="White">
+                FontWeight="Medium">
                 <Button.Style>
                     <Style TargetType="Button">
                         <Setter Property="TextElement.FontFamily" Value="Fonts/#Nunito" />
                         <Setter Property="Background" Value="#ed1e79" />
+                        <Setter Property="Foreground" Value="White" />
                         <Setter Property="Cursor" Value="Hand" />
+                        <Setter Property="IsEnabled" Value="True" />
                         <Setter Property="Button.Effect">
                             <Setter.Value>
                                 <DropShadowEffect
@@ -139,6 +144,20 @@
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter Property="Background" Value="#f14d95" />
                             </Trigger>
+                            <DataTrigger Binding="{Binding Text, ElementName=VersionComboBox}" Value="">
+                                <Setter Property="IsEnabled" Value="False" />
+                                <Setter Property="Background" Value="#353e4b" />
+                                <Setter Property="Foreground" Value="#8a94a1" />
+                                <Setter Property="Button.Effect">
+                                    <Setter.Value>
+                                        <DropShadowEffect
+                                            BlurRadius="0"
+                                            Opacity="0"
+                                            ShadowDepth="0"
+                                            Color="#2f0618" />
+                                    </Setter.Value>
+                                </Setter>
+                            </DataTrigger>
                         </Style.Triggers>
                     </Style>
                 </Button.Style>
