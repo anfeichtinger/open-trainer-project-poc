@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OpenTrainerProject.Components;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -46,6 +47,16 @@ namespace OpenTrainerProject
         {
             get { return WindowTitle.Text; }
             set { WindowTitle.Text = value; }
+        }
+
+        private void TitleButton_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindow window = (MainWindow)Window.GetWindow(this);
+            if (window.WindowContent.GetType() != typeof(StartView))
+            {
+                window.WindowContent = new StartView();
+                WindowButton.Cursor = Cursors.Arrow;
+            }
         }
     }
 }

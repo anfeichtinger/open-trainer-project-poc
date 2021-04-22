@@ -3,6 +3,7 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media.Imaging;
 
 namespace OpenTrainerProject.Components
 {
@@ -11,6 +12,9 @@ namespace OpenTrainerProject.Components
         public TrainerView()
         {
             InitializeComponent();
+            TitleBar.WindowTitle.Text = "Game Name Here";
+            TitleBar.WindowImage.Source = new BitmapImage(new System.Uri("../Images/ArrowLeftIcon.png", System.UriKind.Relative));
+            TitleBar.WindowButton.Cursor = Cursors.Hand;
         }
 
         private void ProceedButton_Click(object sender, RoutedEventArgs e)

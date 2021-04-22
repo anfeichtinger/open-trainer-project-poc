@@ -33,11 +33,25 @@
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
 
-        <Image
-            Width="36"
-            Height="36"
-            RenderOptions.BitmapScalingMode="Fant"
-            Source="../Images/Logo.png" />
+        <Button x:Name="WindowButton" Click="TitleButton_Click">
+            <Button.Style>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type Button}">
+                                <ContentPresenter />
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Button.Style>
+            <Image
+                x:Name="WindowImage"
+                Width="36"
+                Height="36"
+                RenderOptions.BitmapScalingMode="Fant"
+                Source="../Images/Logo.png" />
+        </Button>
 
         <TextBlock
             x:Name="WindowTitle"
