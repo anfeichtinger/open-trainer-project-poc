@@ -56,8 +56,9 @@
         <TextBlock
             x:Name="WindowTitle"
             Grid.Column="1"
-            Grid.ColumnSpan="3"
-            HorizontalAlignment="Center"
+            Grid.ColumnSpan="14"
+            Margin="6,0"
+            HorizontalAlignment="Left"
             VerticalAlignment="Center"
             FontFamily="Fonts/#Nunito"
             FontSize="16"

@@ -1,4 +1,8 @@
-﻿using System.ComponentModel;
+﻿using Newtonsoft.Json;
+using OpenTrainerProject.Model;
+using System.ComponentModel;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -9,10 +13,12 @@ namespace OpenTrainerProject.Components
 {
     public partial class TrainerView : UserControl
     {
-        public TrainerView()
+        private Trainer trainer { get; set; }
+        public TrainerView(Trainer trainer)
         {
+            this.trainer = trainer;
             InitializeComponent();
-            TitleBar.WindowTitle.Text = "Game Name Here";
+            TitleBar.WindowTitle.Text = $"{trainer.GameName} v{trainer.GameVersion} - NOT FOUND";
             TitleBar.WindowImage.Source = new BitmapImage(new System.Uri("../Images/ArrowLeftIcon.png", System.UriKind.Relative));
             TitleBar.WindowButton.Cursor = Cursors.Hand;
         }
@@ -27,11 +33,29 @@ namespace OpenTrainerProject.Components
         }
         private void fetchTrainer(object sender, DoWorkEventArgs e)
         {
-            Thread.Sleep(2000);
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new System.Uri("http://localhost:8000/");
+
+            client.DefaultRequestHeaders.Accept.Add(
+                new MediaTypeWithQualityHeaderValue("application/json"));
+
+            HttpResponseMessage response = client.GetAsync($"api/trainer/{trainer.Id}").Result;
+
+            if (response.IsSuccessStatusCode)
+            {
+                string json = response.Content.ReadAsStringAsync().Result;
+                trainer = JsonConvert.DeserializeObject<Trainer>(json);
+            }
+            else
+            {
+                MessageBox.Show("Error Code" +
+                response.StatusCode + " : Message - " + response.ReasonPhrase);
+            }
         }
         private void fetchTrainerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             Mouse.OverrideCursor = Cursors.Arrow;
+            MessageBox.Show(trainer.ToString());
         }
     }
 }
