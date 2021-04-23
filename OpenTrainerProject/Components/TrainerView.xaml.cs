@@ -73,7 +73,19 @@ namespace OpenTrainerProject.Components
             Mouse.OverrideCursor = null;
             helper = TrainerHelper.GetInstance(trainer, this);
             helper.StartFindGameWorker();
+            helper.RegisterHotkeys();
             TitleBar.WindowButton.Cursor = Cursors.Hand;
+        }
+
+        private bool enabled = false;
+        public IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+        {
+            if (msg == 0x0312)
+            {
+                Console.WriteLine(wParam.ToString());
+                helper.HandleHotkey(wParam, !enabled);
+            }
+            return IntPtr.Zero;
         }
     }
 }

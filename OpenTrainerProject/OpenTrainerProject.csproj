@@ -110,6 +110,7 @@
       <DependentUpon>TitleBar.xaml</DependentUpon>
     </Compile>
     <Compile Include="Util\ApiHelper.cs" />
+    <Compile Include="Util\HotkeyHelper.cs" />
     <Compile Include="Util\TrainerHelper.cs" />
     <Page Include="Components\TrainerView.xaml">
       <Generator>MSBuild:Compile</Generator>
