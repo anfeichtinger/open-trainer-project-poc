@@ -1,5 +1,7 @@
 ﻿using Newtonsoft.Json;
 using OpenTrainerProject.Model;
+using OpenTrainerProject.Util;
+using System;
 using System.ComponentModel;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -14,22 +16,46 @@ namespace OpenTrainerProject.Components
     public partial class TrainerView : UserControl
     {
         private Trainer trainer { get; set; }
+        private TrainerHelper helper { get; set; }
         public TrainerView(Trainer trainer)
         {
             this.trainer = trainer;
             InitializeComponent();
-            TitleBar.WindowTitle.Text = $"{trainer.GameName} v{trainer.GameVersion} - NOT FOUND";
-            TitleBar.WindowImage.Source = new BitmapImage(new System.Uri("../Images/ArrowLeftIcon.png", System.UriKind.Relative));
+            TitleBar.WindowTitle.Text = $"{trainer.GameName} v{trainer.GameVersion} - WAITING FOR GAME";
+            TitleBar.WindowImage.Source = new BitmapImage(new Uri("../Images/ArrowLeftIcon.png", System.UriKind.Relative));
+            TitleBar.WindowButton.Click += BackButton_Click;
             TitleBar.WindowButton.Cursor = Cursors.Hand;
-        }
 
-        private void ProceedButton_Click(object sender, RoutedEventArgs e)
-        {
             BackgroundWorker worker = new BackgroundWorker();
             worker.DoWork += fetchTrainer;
             worker.RunWorkerCompleted += fetchTrainerCompleted;
             worker.RunWorkerAsync();
             Mouse.OverrideCursor = Cursors.Wait;
+        }
+
+        private void BackButton_Click(object sender, RoutedEventArgs e)
+        {
+            helper.StopFindGameWorker();
+            helper.ClearInstance();
+        }
+
+        internal void GameFoundChanged(bool GameFound)
+        {
+            this.Dispatcher.Invoke(new Action(() => {
+                if (GameFound)
+                {
+                    TitleBar.WindowTitle.Text = $"{trainer.GameName} v{trainer.GameVersion} - GAME FOUND";
+                }
+                else
+                {
+                    TitleBar.WindowTitle.Text = $"{trainer.GameName} v{trainer.GameVersion} - WAITING FOR GAME";
+                }
+            }));
+        }
+
+        private void ProceedButton_Click(object sender, RoutedEventArgs e)
+        {
+            //
         }
         private void fetchTrainer(object sender, DoWorkEventArgs e)
         {
@@ -55,7 +81,8 @@ namespace OpenTrainerProject.Components
         private void fetchTrainerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             Mouse.OverrideCursor = Cursors.Arrow;
-            MessageBox.Show(trainer.ToString());
+            helper = TrainerHelper.GetInstance(trainer, this);
+            helper.StartFindGameWorker();
         }
     }
 }

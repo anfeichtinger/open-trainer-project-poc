@@ -32,6 +32,7 @@ namespace OpenTrainerProject.Components
             client.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("application/json"));
 
+            // Todo: No internet or server down handling
             HttpResponseMessage response = client.GetAsync("api/trainer").Result;
 
             if (response.IsSuccessStatusCode)
