@@ -24,7 +24,6 @@ namespace OpenTrainerProject.Components
             TitleBar.WindowTitle.Text = $"{trainer.GameName} v{trainer.GameVersion} - WAITING FOR GAME";
             TitleBar.WindowImage.Source = new BitmapImage(new Uri("../Images/ArrowLeftIcon.png", System.UriKind.Relative));
             TitleBar.WindowButton.Click += BackButton_Click;
-            TitleBar.WindowButton.Cursor = Cursors.Hand;
 
             BackgroundWorker worker = new BackgroundWorker();
             worker.DoWork += fetchTrainer;
@@ -59,30 +58,22 @@ namespace OpenTrainerProject.Components
         }
         private void fetchTrainer(object sender, DoWorkEventArgs e)
         {
-            HttpClient client = new HttpClient();
-            client.BaseAddress = new System.Uri("http://localhost:8000/");
-
-            client.DefaultRequestHeaders.Accept.Add(
-                new MediaTypeWithQualityHeaderValue("application/json"));
-
-            HttpResponseMessage response = client.GetAsync($"api/trainer/{trainer.Id}").Result;
-
-            if (response.IsSuccessStatusCode)
+            string json = new ApiHelper().Fetch($"api/trainer/{trainer.Id}");
+            if (json.StartsWith("Error"))
             {
-                string json = response.Content.ReadAsStringAsync().Result;
-                trainer = JsonConvert.DeserializeObject<Trainer>(json);
+                MessageBox.Show(json);
             }
             else
             {
-                MessageBox.Show("Error Code" +
-                response.StatusCode + " : Message - " + response.ReasonPhrase);
+                trainer = JsonConvert.DeserializeObject<Trainer>(json);
             }
         }
         private void fetchTrainerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            Mouse.OverrideCursor = Cursors.Arrow;
+            Mouse.OverrideCursor = null;
             helper = TrainerHelper.GetInstance(trainer, this);
             helper.StartFindGameWorker();
+            TitleBar.WindowButton.Cursor = Cursors.Hand;
         }
     }
 }

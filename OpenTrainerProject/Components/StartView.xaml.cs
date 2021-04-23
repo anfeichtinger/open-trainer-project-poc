@@ -7,6 +7,8 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Windows;
 using System.Windows.Controls;
+using OpenTrainerProject.Util;
+using System.Windows.Input;
 
 namespace OpenTrainerProject.Components
 {
@@ -22,38 +24,33 @@ namespace OpenTrainerProject.Components
             worker.DoWork += fetchTrainers;
             worker.RunWorkerCompleted += fetchTrainersCompleted;
             worker.RunWorkerAsync();
+            Mouse.OverrideCursor = Cursors.Wait;
         }
 
         private void fetchTrainers(object sender, DoWorkEventArgs e)
         {
-            HttpClient client = new HttpClient();
-            client.BaseAddress = new Uri("http://localhost:8000/");
-
-            client.DefaultRequestHeaders.Accept.Add(
-                new MediaTypeWithQualityHeaderValue("application/json"));
-
-            // Todo: No internet or server down handling
-            HttpResponseMessage response = client.GetAsync("api/trainer").Result;
-
-            if (response.IsSuccessStatusCode)
+            string json = new ApiHelper().Fetch("api/trainer");
+            if (json.StartsWith("[Error]"))
             {
-                string json = response.Content.ReadAsStringAsync().Result;
+                MessageBox.Show(json);
+            } else
+            {
                 Trainers = JsonConvert.DeserializeObject<Trainer[]>(json);
-            }
-            else
-            {
-                MessageBox.Show("Error Code" +
-                response.StatusCode + " : Message - " + response.ReasonPhrase);
             }
         }
         private void fetchTrainersCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            foreach (Trainer trainer in Trainers) 
-            {
-                GameComboBox.Items.Add(trainer.GameName);
+            if (Trainers != null) 
+            { 
+                foreach (Trainer trainer in Trainers) 
+                {
+                    GameComboBox.Items.Add(trainer.GameName);
+                }
+                GameComboBox.SelectedIndex = 0;
+                GameComboBox_DropDownClosed(null, null);
             }
-            GameComboBox.SelectedIndex = 0;
-            GameComboBox_DropDownClosed(null, null);
+
+            Mouse.OverrideCursor = null;
         }
         private void GameComboBox_DropDownClosed(object sender, EventArgs e)
         {
