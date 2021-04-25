@@ -40,7 +40,8 @@ namespace OpenTrainerProject.Components
 
         internal void GameFoundChanged(bool GameFound)
         {
-            this.Dispatcher.Invoke(new Action(() => {
+            this.Dispatcher.Invoke(new Action(() =>
+            {
                 if (GameFound)
                 {
                     TitleBar.WindowTitle.Text = $"{trainer.GameName} v{trainer.GameVersion} - GAME FOUND";
@@ -77,13 +78,11 @@ namespace OpenTrainerProject.Components
             TitleBar.WindowButton.Cursor = Cursors.Hand;
         }
 
-        private bool enabled = false;
         public IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
         {
             if (msg == 0x0312)
             {
-                Console.WriteLine(wParam.ToString());
-                helper.HandleHotkey(wParam, !enabled);
+                helper.HandleHotkey(wParam);
             }
             return IntPtr.Zero;
         }

@@ -38,9 +38,9 @@ namespace OpenTrainerProject.Util
             foreach (Hotkey hotkey in hotkeys)
             {
                 int value = int.Parse(hotkey.Value);
-                Console.WriteLine(RegisterHotKey(helper.Handle, value, 0x0000, value));
+                RegisterHotKey(helper.Handle, value, 0x0000, value);
             }
         }
-        
+
     }
 }

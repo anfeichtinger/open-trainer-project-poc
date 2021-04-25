@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -71,8 +72,8 @@ namespace OpenTrainerProject.Util
                 Thread.Sleep(2000);
             }
         }
-        
-        public void RegisterHotkeys() 
+
+        public void RegisterHotkeys()
         {
             HotkeyHelper helper = new HotkeyHelper(observer);
             Hotkey[] hotkeys = new Hotkey[trainer.GameCheats.Length];
@@ -83,61 +84,104 @@ namespace OpenTrainerProject.Util
             helper.RegisterHotkeys(hotkeys);
         }
 
-        internal async void HandleHotkey(IntPtr wParam, bool enable)
+        // Some methods are overloaded. Get the signature from the one you need from Memory.dll and add an if here
+        private Type[] getSignature(string methodName)
+        {
+            if (methodName.Equals("AoBScan"))
+            {
+                return new Type[] { typeof(long), typeof(long), typeof(string), typeof(bool), typeof(bool), typeof(string) };
+            }
+            return null;
+        }
+        private _MethodInfo GetMethodInfo(MemFunction f, Type[] signature, bool active)
+        {
+            if (active)
+            {
+                if (f.Method.Equals("FreezeValue"))
+                {
+                    return memLib.GetType().GetMethod("UnfreezeValue");
+                }
+            }
+            return signature != null
+                             ? memLib.GetType().GetMethod(f.Method, signature)
+                             : memLib.GetType().GetMethod(f.Method);
+
+        }
+        internal async void HandleHotkey(IntPtr wParam)
         {
             foreach (GameCheat gameCheat in trainer.GameCheats)
             {
                 if (gameCheat.Hotkey.Value.Equals(wParam.ToString()))
                 {
-                    string jsonstring1 = "{\"parameters\": { \"start\" : 0x09000000, \"end\" : 0x0A000000, \"search\" : \"89 88 DC 00 00 00 8B 88\", \"writable\" : true, \"executable\" : true, \"file\": \"\" }}";
-                    JObject json1 = JsonConvert.DeserializeObject<JObject>(jsonstring1);
+                    // For communication between methods
+                    int saveResultFor = 0;
+                    dynamic result = null;
+                    // Iterate over Fuctions
+                    foreach (MemFunction f in gameCheat.MemFunctions)
+                    {
+                        // Dont overwrite existing save count if it's not reset
+                        if (saveResultFor == 0)
+                        {
+                            saveResultFor = f.SaveResultFor;
+                        }
+                        // Parse json for easy access to values
+                        string jsonString = JsonConvert.SerializeObject(f.Parameters, Formatting.None, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+                        JObject json = JsonConvert.DeserializeObject<JObject>(jsonString);
 
-                    var signature = new[] { typeof(long) , typeof(long) , typeof(string) , typeof(bool) , typeof(bool) , typeof(string) };
-                    var method1 = memLib.GetType().GetMethod("AoBScan", signature);
-                    object[] param1 = method1.GetParameters()
-        .Select(p => Convert.ChangeType((string)json1["parameters"][p.Name], p.ParameterType))
-        .ToArray();
+                        // Some methods like AoBScan are overloaded. For now it's hard coded, ideally should be extracted from parameters
+                        Type[] signature = getSignature(f.Method);
 
-                    Task<IEnumerable<long>> scanTask = (Task<IEnumerable<long>>) method1.Invoke(memLib, param1);
-                    await scanTask;
-                    IEnumerable<long> scanLong = scanTask.Result;
-                    string scan = scanLong.FirstOrDefault().ToString("x8").ToUpper();
+                        // Get Activate or Deactivate Method
+                        _MethodInfo method = GetMethodInfo(f, signature, gameCheat.IsActive);
 
-                    string jsonstring2 = "{\"parameters\": { \"address\" : \" \", \"type\" : \"bytes\", \"value\" : \"0x90 0x90 0x90 0x90 0x90 0x90\" }}";
-                    JObject json2 = JsonConvert.DeserializeObject<JObject>(jsonstring2);
+                        // Need to convert Addresses to Long for the AoBScan
+                        if (f.Method.Equals("AoBScan"))
+                        {
+                            json["start"] = Convert.ToInt64(json["start"].ToString(), 16);
+                            json["end"] = Convert.ToInt64(json["end"].ToString(), 16);
+                        }
+                        // Generate parameters of correct type
+                        object[] param = method.GetParameters()
+                                        .Select(p => Convert.ChangeType((string)json[p.Name], p.ParameterType))
+                                        .ToArray();
 
-                    var method2 = memLib.GetType().GetMethod("FreezeValue");
-                    object[] param2 = method2.GetParameters()
-        .Select(p => Convert.ChangeType((string)json2["parameters"][p.Name], p.ParameterType))
-        .ToArray();
-                    param2[0] = scan;
-                    method2.Invoke(memLib, param2);
-
-                    string jsonstring3 = "{\"parameters\": { \"address\" : \"libhl.dll+0x0002D1A8,0x448,0x8,0x58,0x64,0xD8\", \"type\" : \"int\", \"value\" : \"999999\", \"file\": \"\" }}";
-                    JObject json3 = JsonConvert.DeserializeObject<JObject>(jsonstring3);
-
-                    var method3 = memLib.GetType().GetMethod("FreezeValue");
-                    object[] param3 = method3.GetParameters()
-        .Select(p => Convert.ChangeType((string)json3["parameters"][p.Name], p.ParameterType))
-        .ToArray();
-
-                    method3.Invoke(memLib, param3);
-
-                    string jsonstring4 = "{\"parameters\": { \"address\" : \"libhl.dll+0x0002D1A8,0x580,0x0,0x18,0x64,0xDC\", \"type\" : \"int\", \"value\" : \"999999\", \"file\": \"\" }}";
-                    JObject json4 = JsonConvert.DeserializeObject<JObject>(jsonstring4);
-
-                    var method4 = memLib.GetType().GetMethod("FreezeValue");
-                    object[] param4 = method4.GetParameters()
-        .Select(p => Convert.ChangeType((string)json4["parameters"][p.Name], p.ParameterType))
-        .ToArray();
-
-                    method4.Invoke(memLib, param4);
-
-                    /*long scan = memLib.AoBScan(0x09000000, 0x0A000000, "89 88 DC 00 00 00 8B 88", true, true).Result.FirstOrDefault();
-                    memLib.FreezeValue(scan.ToString("x8").ToUpper(), "bytes", "0x90 0x90 0x90 0x90 0x90 0x90");
-                    memLib.FreezeValue("libhl.dll+0x0002D1A8,0x448,0x8,0x58,0x64,0xD8", "int", "999999");
-                    memLib.FreezeValue("libhl.dll+0x0002D1A8,0x580,0x0,0x18,0x64,0xDC", "int", "999999");
-                    */
+                        // When there is a result from a prior Method
+                        if (result != null)
+                        {
+                            // Use the result as first parameter
+                            param[0] = result;
+                            method.Invoke(memLib, param);
+                            // If result is no longer needed discard it
+                            if (--saveResultFor == 0)
+                            {
+                                result = null;
+                            }
+                        }
+                        // Should save this result
+                        else if (saveResultFor > 0)
+                        {
+                            // AoBScan requires correct handling of types because it's async
+                            if (f.Method.Equals("AoBScan"))
+                            {
+                                Task<IEnumerable<long>> scanTask = (Task<IEnumerable<long>>)method.Invoke(memLib, param);
+                                await scanTask;
+                                IEnumerable<long> scanLong = scanTask.Result;
+                                result = scanLong.FirstOrDefault().ToString("x8").ToUpper();
+                            }
+                            else
+                            {
+                                // Simply save result
+                                result = method.Invoke(memLib, param);
+                            }
+                        }
+                        else
+                        {
+                            // No special case
+                            method.Invoke(memLib, param);
+                        }
+                    }
+                    // Set active state accordingly
+                    gameCheat.IsActive = !gameCheat.IsActive;
                 }
             }
         }

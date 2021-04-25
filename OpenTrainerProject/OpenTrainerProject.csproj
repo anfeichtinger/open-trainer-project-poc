@@ -109,6 +109,11 @@
     <Compile Include="Components\TitleBar.xaml.cs">
       <DependentUpon>TitleBar.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Model\GameCheat.cs" />
+    <Compile Include="Model\Hotkey.cs" />
+    <Compile Include="Model\MemFunction.cs" />
+    <Compile Include="Model\Parameters.cs" />
+    <Compile Include="Model\Trainer.cs" />
     <Compile Include="Util\ApiHelper.cs" />
     <Compile Include="Util\HotkeyHelper.cs" />
     <Compile Include="Util\TrainerHelper.cs" />
@@ -146,10 +151,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Model\Cheat.cs" />
-    <Compile Include="Model\GameCheat.cs" />
-    <Compile Include="Model\Hotkey.cs" />
-    <Compile Include="Model\Trainer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
